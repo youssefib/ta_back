@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::create([
             'first_name' => 'youssef',
-            'last_name' => 'youssef',
-            'username' => 'youssef',
-            'email' => 'youssef@example.com',
+            'last_name' => 'ibaichou',
+            'username' => 'ucef',
+            'email' => 'youssef@app.com',
             'password' => bcrypt('youssef'),
         ]);
     }

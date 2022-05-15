@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -17,10 +19,9 @@ class UserRequest extends FormRequest
         return [
             "first_name"    =>["required"],
             "last_name"     =>["required"],
-            "username"      =>["required","unique:users,username"],
-            "email"         =>["required","unique:users,email"],
-            "password"      =>["required"],
-            "is_admin"      =>["required","boolean"],
+            "username"      =>["required",Rule::unique('users')->ignore($this->user)],
+            "email"         =>["required",Rule::unique('users')->ignore($this->user)],
+            "is_admin"      =>["nullable","boolean"],
         ];
     }
 }

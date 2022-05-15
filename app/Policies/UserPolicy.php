@@ -14,6 +14,11 @@ class UserPolicy
         return $user->is_admin;
     }
 
+    public function view(User $user)
+    {
+        return $user->is_admin;
+    }
+
     public function create(User $user)
     {
         return $user->is_admin;

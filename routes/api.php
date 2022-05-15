@@ -17,11 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix("auth")->group(function(){
+Route::prefix("auth")->middleware("guest:api")->group(function(){
     Route::post('login', [AuthController::class, 'login']);
 });
 
 
 Route::prefix("users")->middleware("auth:api")->group(function(){
-    Route::get('/', [UserController::class, 'index'])->can('update', User::class);
+    Route::get('/', [UserController::class, 'index'])->can('viewAny', User::class);
+    Route::get('/{user}', [UserController::class, 'get'])->can('view', User::class);
+    Route::post('/', [UserController::class, 'create'])->can('create', User::class);
+    Route::put('/{user}', [UserController::class, 'update'])->can('update', User::class);
+    Route::delete('/{user}', [UserController::class, 'delete'])->can('delete', User::class);
 });
