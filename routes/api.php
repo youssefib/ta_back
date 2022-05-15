@@ -28,4 +28,5 @@ Route::prefix("users")->middleware("auth:api")->group(function(){
     Route::post('/', [UserController::class, 'create'])->can('create', User::class);
     Route::put('/{user}', [UserController::class, 'update'])->can('update', User::class);
     Route::delete('/{user}', [UserController::class, 'delete'])->can('delete', User::class);
+    Route::get('/{user}/reset', [UserController::class, 'reset'])->can('reset', User::class);
 });

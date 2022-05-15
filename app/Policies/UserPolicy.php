@@ -33,4 +33,9 @@ class UserPolicy
     {
         return $user->is_admin;
     }
+
+    public function reset(User $user)
+    {
+        return $user->is_admin;
+    }
 }

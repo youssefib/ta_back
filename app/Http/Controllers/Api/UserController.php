@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\ResetPassword;
 use App\Models\User;
 use App\Services\PasswordService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -49,6 +51,18 @@ class UserController extends Controller
     function delete(User $user){
         $user->delete();
         return response()->json(['message'=>'supprimer!!']);
+    }
+
+    function reset(PasswordService $passwordService,User $user){
+
+        $password = $passwordService->generate();
+        $user->update([
+            'password'  =>bcrypt($password),
+        ]);
+
+        Mail::to($user->email)->send(new ResetPassword($user,$password));
+        return new UserResource($user);
+
     }
 
 
