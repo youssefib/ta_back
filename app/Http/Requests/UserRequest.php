@@ -20,7 +20,7 @@ class UserRequest extends FormRequest
             "first_name"    =>["required"],
             "last_name"     =>["required"],
             "username"      =>["required",Rule::unique('users')->ignore($this->user)],
-            "email"         =>["required",Rule::unique('users')->ignore($this->user)],
+            "email"         =>["required","email",Rule::unique('users')->ignore($this->user)],
             "is_admin"      =>["nullable","boolean"],
         ];
     }

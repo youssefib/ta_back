@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix("auth")->middleware("guest:api")->group(function(){
+Route::prefix("auth")->group(function(){
     Route::post('login', [AuthController::class, 'login']);
 });
 
@@ -29,4 +29,12 @@ Route::prefix("users")->middleware("auth:api")->group(function(){
     Route::put('/{user}', [UserController::class, 'update'])->can('update', User::class);
     Route::delete('/{user}', [UserController::class, 'delete'])->can('delete', User::class);
     Route::get('/{user}/reset', [UserController::class, 'reset'])->can('reset', User::class);
+});
+
+Route::prefix("deplacements")->middleware("auth:api")->group(function(){
+    Route::get('/', [DeplacementController::class, 'index'])->can('viewAny', Deplacement::class);
+    Route::get('/{deplacement}', [DeplacementController::class, 'get'])->can('view', Deplacement::class);
+    Route::post('/', [DeplacementController::class, 'create'])->can('create', Deplacement::class);
+    Route::put('/{deplacement}', [DeplacementController::class, 'update'])->can('update', Deplacement::class);
+    Route::delete('/{deplacement}', [DeplacementController::class, 'delete'])->can('delete', Deplacement::class);
 });
