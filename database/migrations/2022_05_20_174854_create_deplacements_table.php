@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
 
-            $table->integer('user_id');
+            $table->integer('user');
             $table->integer('id_vehicule');
             $table->date('date');
             $table->string('intitule');
@@ -27,7 +27,13 @@ return new class extends Migration
             $table->double('nb_km')->nullable();
             $table->boolean('f_divers')->default(0);
             $table->string('infos')->nullable();
-            $table->double('m_divers')->nullable();
+            $table->string('t_repas')->nullable();
+            $table->integer('nb_repas')->nullable();
+            $table->double('m_repas')->nullable();
+            $table->double('m_hotel')->nullable();
+            $table->boolean('valider')->default(0);
+            $table->boolean('imprime')->default(0);
+            $table->date('d_imp')->nullable();
 
 
             $table->timestamps();

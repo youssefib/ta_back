@@ -37,6 +37,13 @@ class DeplacementController extends Controller
             'f_divers'      =>$request->f_divers,
             'm_divers'      =>$request->m_divers,
             'infos'         =>$request->infos,
+            't_repas'       =>$request->t_repas,
+            'nb_repas'      =>$request->nb_repas,
+            'm_repas'       =>$request->m_repas,
+            'm_hotel'       =>$request->m_hotel,
+            'valider'       =>$request->valider,
+            'imprime'       =>$request->imprime,
+            'd_imp'         =>$request->d_imp,
         ]);
         return new DeplacementResource($deplacement);
     }
@@ -54,6 +61,13 @@ class DeplacementController extends Controller
             'f_divers'      =>$request->f_divers,
             'm_divers'      =>$request->m_divers,
             'infos'         =>$request->infos,
+            't_repas'       =>$request->t_repas,
+            'nb_repas'      =>$request->nb_repas,
+            'm_repas'       =>$request->m_repas,
+            'm_hotel'       =>$request->m_hotel,
+            'valider'       =>$request->valider,
+            'imprime'       =>$request->imprime,
+            'd_imp'         =>$request->d_imp,
         ]);
 
         return new DeplacementResource($deplacement);
