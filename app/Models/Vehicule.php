@@ -16,7 +16,7 @@ class Vehicule extends Model
 
     ];
 
-    function deplacement(){
-        return $this->belongsTo('App\Models\Deplacement');
+    function deplacements(){
+        return $this->hasMany('App\Models\Deplacement');
     }
 }

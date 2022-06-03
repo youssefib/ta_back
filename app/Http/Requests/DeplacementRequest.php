@@ -3,21 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-// use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeplacementRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,14 +18,15 @@ class DeplacementRequest extends FormRequest
     public function rules()
     {
         return [
-            "user_id"           =>["required"],
-            "id_vehicule"       =>["required"],
+            "user_id"           =>["required", "exists:users,id"],
+            "vehicule_id"       =>["required", "exists:vehicules,id"],
             "date"              =>["required"],
             "intitule"          =>["required"],
             "peage"             =>["nullable"],
             "gasoil"            =>["nullable"],
             "ptm"               =>["nullable"],
             "nb_km"             =>["nullable"],
+            "t_km"              =>["nullable"],
             "f_divers"          =>["nullable"],
             "m_divers"          =>["nullable"],
             "infos"             =>["nullable","boolean"],

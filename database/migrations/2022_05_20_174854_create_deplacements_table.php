@@ -17,15 +17,17 @@ return new class extends Migration
             $table->id();
 
 
-            $table->integer('user');
-            $table->integer('id_vehicule');
+            $table->integer('user_id');
+            $table->integer('vehicule_id');
             $table->date('date');
             $table->string('intitule');
             $table->double('peage')->nullable();
             $table->double('gasoil')->nullable();
             $table->double('ptm')->nullable();
             $table->double('nb_km')->nullable();
+            $table->double('t_km')->nullable();
             $table->boolean('f_divers')->default(0);
+            $table->boolean('m_divers')->nullable();
             $table->string('infos')->nullable();
             $table->string('t_repas')->nullable();
             $table->integer('nb_repas')->nullable();

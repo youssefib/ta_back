@@ -10,9 +10,9 @@ class Deplacement extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user',
+        'user_id',
 
-        'vehicule',
+        'vehicule_id',
 
         'date',
 
@@ -26,6 +26,9 @@ class Deplacement extends Model
 
         // nombre de km
         'nb_km',
+
+        // Taux  Km
+        't_km',
 
         //frais divers
         'f_divers',
@@ -62,7 +65,7 @@ class Deplacement extends Model
     }
 
     function vehicule(){
-        return $this->hasOne('App\Models\Vehicule');
+        return $this->belongsTo('App\Models\Vehicule');
     }
 
 

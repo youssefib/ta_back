@@ -5,33 +5,38 @@ namespace App\Policies;
 use App\Models\Deplacement;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class DeplacementPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user, Deplacement $deplacement)
+    public function viewAny(User $user)
     {
-        return $user->is_admin || $deplacement->user->id === $user->id;
+
+        return $user->is_admin ;
+
     }
 
-    public function view(User $user, Deplacement $deplacement)
-    {
-        return $user->is_admin || $deplacement->user->id === $user->id;
-    }
-
-    public function create(User $user, Deplacement $deplacement)
-    {
-        return $user->is_admin || $deplacement->user->id === $user->id;
-    }
-
-    public function update(User $user, Deplacement $deplacement)
-    {
-        return $user->is_admin || $deplacement->user->id === $user->id;
-    }
-
-    public function delete(User $user, Deplacement $deplacement)
+    public function view(User $user)
     {
         return $user->is_admin;
+    }
+
+    public function create(User $user)
+    {
+        Log::info($user);
+        return $user->is_admin;
+    }
+
+    public function update(Deplacement $deplacement)
+    {
+        return !$deplacement->valider;
+    }
+
+    public function delete(Deplacement $deplacement)
+    {
+        Log::info($deplacement);
+        return !$deplacement->valider;
     }
 }

@@ -14,6 +14,10 @@ class VehiculeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id"            =>$this->id,
+            "immat"         =>$this->immat,
+            "taux_km"       =>$this->taux_km,
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DeplacementResource extends JsonResource
@@ -16,14 +17,14 @@ class DeplacementResource extends JsonResource
     {
         return [
             "id"            =>$this->id,
-            "user"          =>$this->user->id,
-            "vehicule"      =>VehiculeResource::collection($this->vehicule),
+            "user_id"       =>$this->user_id,
+            "vehicule_id"   =>$this->vehicule_id,
             "date"          =>$this->date,
             "intitule"      =>$this->intitule,
             "peage"         =>$this->peage,
-            "peage"         =>$this->peage,
             "ptm"           =>$this->ptm,
             "nb_km"         =>$this->nb_km,
+            "t_km"          =>$this->t_km,
             "f_divers"      =>$this->f_divers,
             "m_divers"      =>$this->m_divers,
             "infos"         =>$this->infos,
@@ -34,6 +35,8 @@ class DeplacementResource extends JsonResource
             "valider"       =>$this->valider,
             "imprime"       =>$this->imprime,
             "d_imp"         =>$this->d_imp,
+            "user"          => new UserResource($this->whenLoaded('user')),
+            "vehicule"      => new VehiculeResource($this->whenLoaded('vehicule')),
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Mail\ResetPassword;
 use App\Models\User;
 use App\Services\PasswordService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -17,6 +18,11 @@ class UserController extends Controller
         $users = User::all();
 
         return UserResource::collection($users);
+    }
+
+    function currentUser(){
+        $user =  auth()->user();
+        return new UserResource($user);
     }
 
     function get(User $user){

@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Deplacement;
+use App\Policies\DeplacementPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+
+        Deplacement::class => DeplacementPolicy::class,
     ];
 
     /**
@@ -24,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        Log::info('teest 2');
+
 
         //
     }
