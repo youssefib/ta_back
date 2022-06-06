@@ -18,7 +18,7 @@ class DeplacementRequest extends FormRequest
     public function rules()
     {
         return [
-            "user_id"           =>["required", "exists:users,id"],
+            "user_id"           =>["nullable", "exists:users,id"],
             "vehicule_id"       =>["required", "exists:vehicules,id"],
             "date"              =>["required"],
             "intitule"          =>["required"],

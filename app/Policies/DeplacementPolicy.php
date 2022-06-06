@@ -18,25 +18,8 @@ class DeplacementPolicy
 
     }
 
-    public function view(User $user)
-    {
-        return $user->is_admin;
-    }
-
-    public function create(User $user)
-    {
-        Log::info($user);
-        return $user->is_admin;
-    }
-
-    public function update(Deplacement $deplacement)
-    {
-        return !$deplacement->valider;
-    }
-
     public function delete(Deplacement $deplacement)
     {
-        Log::info($deplacement);
         return !$deplacement->valider;
     }
 }
