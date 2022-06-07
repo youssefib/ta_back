@@ -36,6 +36,7 @@ class DeplacementRequest extends FormRequest
             "valider"           =>["nullable","boolean"],
             "imprime"           =>["nullable","boolean"],
             "d_imp"             =>["nullable"],
+            "print_link"        =>["nullable"],
         ];
     }
 }

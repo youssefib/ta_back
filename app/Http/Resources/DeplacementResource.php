@@ -35,6 +35,8 @@ class DeplacementResource extends JsonResource
             "valider"       =>$this->valider,
             "imprime"       =>$this->imprime,
             "d_imp"         =>$this->d_imp,
+            "print_link"    =>$this->print_link,
+            "cvs_link"      =>$this->cvs_link,
             "user"          => new UserResource($this->whenLoaded('user')),
             "vehicule"      => new VehiculeResource($this->whenLoaded('vehicule')),
         ];

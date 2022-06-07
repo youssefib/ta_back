@@ -58,6 +58,10 @@ class Deplacement extends Model
          // date impression
          'd_imp',
 
+         'print_link',
+
+         'cvs_link',
+
     ];
 
     function user(){

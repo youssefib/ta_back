@@ -145,7 +145,7 @@ class DeplacementController extends Controller
             $deplacement->delete();
             return response()->json(['message'=>'supprimer!!']);
         }else{
-            return response()->json(['message'=>'Imposible de supprimer un deplacement déjà valider!!']);
+            return response()->json(['message'=>'Imposible de supprimer un deplacement déjà valider!!'],403);
         }
     }
 
@@ -156,16 +156,20 @@ class DeplacementController extends Controller
         $dompdf = new Dompdf();
         $deplacements = Deplacement::whereIn('id',$request->ids)->get();
 
+        $imprimable = $deplacements->filter(function ($deplacement) {
+            return !$deplacement->imprime;
+        });
 
+        $non_imprimable = $deplacements->filter(function ($deplacement) {
+            return $deplacement->imprime;
+        });
 
-        foreach($deplacements as $deplacement){
-            $deplacement->update([
-                'imprime'       =>1,
-                'd_imp'         =>$date,
-            ]);
+        if(!count($imprimable)){
+            return response()->json(['message'=>'Imposible d\'imprimer un deplacement déjà imprimer!!'],403);
+
         }
 
-        $dompdf->loadHtml(view('pdf',compact('deplacements','date'))->render());
+        $dompdf->loadHtml(view('pdf',['deplacements' => $imprimable , 'date' => $date])->render());
 
         $dompdf->setPaper('A4', 'landscape');
 
@@ -175,56 +179,40 @@ class DeplacementController extends Controller
 
         Storage::put($file_path,$output);
 
-        $file= public_path(). '/storage/export/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf';
+        $file= asset('/storage/export/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf') ;
 
-        $headers = array(
-            'Content-Type: application/pdf',
-          );
+        // foreach($deplacements as $deplacement){
+        //     $deplacement->update([
+        //         'imprime'       =>1,
+        //         'd_imp'         =>$date,
+        //     ]);
+        // }
 
-        return '<a href="' .$file. '" target="_blank" download ">Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf</a>' ;
+        $deplacements_ids =  $imprimable->pluck('id');
+
+        Deplacement::whereIn('id', $deplacements_ids)->update([
+            'imprime' => 1,
+            'd_imp'   =>$date,
+        ]);
+        // return '<a href="' .$file. '" target="_blank" download ">Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf</a>' ;
+        return ['url' => $file, 'imprimable' => count($imprimable), 'non_imprimable' => count($non_imprimable)] ;
     }
 
 public function exportCsv(Request $request)
 {
 
     $date = Carbon::now();
-   $fileName = 'Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'csv';
-   $deplacements = Deplacement::whereIn('id',$request->ids)->get();
+    $fileName = 'Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'csv';
+    $deplacements = Deplacement::whereIn('id',$request->ids)->get();
 
+    $csv =view('csv',compact('deplacements'))->render();
+    $output = $csv;
+    $file_path = 'public/csv/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.csv';
+    Storage::put($file_path,$output);
+    $file= asset('/storage/csv/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.csv') ;
+    return ['url' => $file];
 
-        $headers = array(
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        );
-
-        $columns = array('intitule', 'date', 'Description', 'Start Date', 'Due Date');
-
-        $callback = function() use($deplacements, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
-
-            foreach ($deplacements as $deplacement) {
-                $row['intitule']        = $deplacement->intitule;
-                $row['date']            = $deplacement->date;
-                $row['Description']     = $deplacement->description;
-                $row['Start Date']      = $deplacement->start_at;
-                $row['Due Date']        = $deplacement->end_at;
-
-                fputcsv($file, array($row['intitule'], $row['date'], $row['Description'], $row['Start Date'], $row['Due Date']));
-            }
-
-            fclose($file);
-        };
-
-        $file_path = 'public/csv/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf';
-
-        Excel::store(new InvoicesExport(2018), 'invoices.xlsx');
-        return 'ok' ;
-
-    }
+}
 
 
 }
