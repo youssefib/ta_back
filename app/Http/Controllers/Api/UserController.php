@@ -31,14 +31,20 @@ class UserController extends Controller
     }
 
     function create(UserRequest $request, PasswordService $passwordService){
+        $password = $passwordService->generate();
+
         $user = User::create([
             'first_name'=>$request->first_name,
             'last_name' =>$request->last_name,
             'username'  =>$request->username,
             'email'     =>$request->email,
-            'password'  =>bcrypt($passwordService->generate()),
+            'password'  =>$password,
             'is_admin'  =>$request->is_admin ?? 0,
         ]);
+
+        Mail::to($user->email)->send(new ResetPassword($user,$password));
+        return new UserResource($user);
+
         return new UserResource($user);
     }
 
