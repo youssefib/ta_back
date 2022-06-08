@@ -37,6 +37,10 @@ class DeplacementRequest extends FormRequest
             "imprime"           =>["nullable","boolean"],
             "d_imp"             =>["nullable"],
             "print_link"        =>["nullable"],
+            "export_csv"        =>["nullable","boolean"],
+            "d_csv"             =>["nullable"],
+            "csv_link"          =>["nullable"],
+
         ];
     }
 }

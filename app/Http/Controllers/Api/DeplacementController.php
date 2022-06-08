@@ -181,20 +181,15 @@ class DeplacementController extends Controller
 
         $file= asset('/storage/export/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf') ;
 
-        // foreach($deplacements as $deplacement){
-        //     $deplacement->update([
-        //         'imprime'       =>1,
-        //         'd_imp'         =>$date,
-        //     ]);
-        // }
+
 
         $deplacements_ids =  $imprimable->pluck('id');
 
         Deplacement::whereIn('id', $deplacements_ids)->update([
             'imprime' => 1,
             'd_imp'   =>$date,
+            'print_link'   =>$file,
         ]);
-        // return '<a href="' .$file. '" target="_blank" download ">Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.pdf</a>' ;
         return ['url' => $file, 'imprimable' => count($imprimable), 'non_imprimable' => count($non_imprimable)] ;
     }
 
@@ -205,12 +200,33 @@ public function exportCsv(Request $request)
     $fileName = 'Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'csv';
     $deplacements = Deplacement::whereIn('id',$request->ids)->get();
 
-    $csv =view('csv',compact('deplacements'))->render();
+    $exportables = $deplacements->filter(function ($deplacement) {
+        return !$deplacement->export_csv;
+    });
+
+    $non_exportable = $deplacements->filter(function ($deplacement) {
+        return $deplacement->export_csv;
+    });
+
+    if(!count($exportables)){
+        return response()->json(['message'=>'Imposible d\'exporter un deplacement deja exporter!!'],403);
+
+    }
+
+    $csv =view('csv',['deplacements' => $exportables])->render();
     $output = $csv;
     $file_path = 'public/csv/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.csv';
     Storage::put($file_path,$output);
     $file= asset('/storage/csv/Export des frais de déplacement du '.$date->format('d-m-Y H.i.s').'.csv') ;
-    return ['url' => $file];
+
+    $deplacements_ids =  $exportables->pluck('id');
+
+        Deplacement::whereIn('id', $deplacements_ids)->update([
+            'export_csv'    => 1,
+            'd_csv'         =>$date,
+            'csv_link'      =>$file,
+        ]);
+    return ['url' => $file, 'exportables' => count($exportables), 'non_exportable' => count($non_exportable)];
 
 }
 

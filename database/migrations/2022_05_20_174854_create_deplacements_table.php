@@ -36,6 +36,11 @@ return new class extends Migration
             $table->boolean('valider')->default(0);
             $table->boolean('imprime')->default(0);
             $table->date('d_imp')->nullable();
+            $table->string('print_link')->nullable();
+            $table->boolean('export_csv')->default(0);
+            $table->date('d_csv')->nullable();
+            $table->string('csv_link')->nullable();
+
 
 
             $table->timestamps();

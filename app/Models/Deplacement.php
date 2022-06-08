@@ -60,7 +60,12 @@ class Deplacement extends Model
 
          'print_link',
 
-         'cvs_link',
+         'export_csv',
+
+         'd_csv',
+
+         'csv_link',
+
 
     ];
 
